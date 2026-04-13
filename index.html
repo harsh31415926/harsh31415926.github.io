@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HarshSharma — AI Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#03050d;--ink:#0a0f1e;--card:#0d1428;
+  --accent:#39ff14;--gold:#fbbf24;--pink:#ff3cac;--blue:#38bdf8;
+  --text:#c8d6f0;--dim:#4a5880;--border:rgba(57,255,20,0.1);
+}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+
+#cur{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:exclusion;transition:width .2s,height .2s}
+#cur.big{width:48px;height:48px;background:rgba(57,255,20,.12);border:1px solid var(--accent)}
+#trail{width:30px;height:30px;border:1px solid rgba(57,255,20,.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform .5s cubic-bezier(.23,1,.32,1)}
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--pink));z-index:300;transition:width .08s}
+
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:400}
+
+nav{position:fixed;top:0;width:100%;z-index:200;padding:1.2rem 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,13,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(57,255,20,.5)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:8rem 5vw 5rem;position:relative;overflow:hidden}
+.mesh{position:absolute;inset:0;background:radial-gradient(ellipse 55% 65% at 72% 40%,rgba(57,255,20,.07),transparent 60%),radial-gradient(ellipse 40% 50% at 18% 70%,rgba(255,60,172,.06),transparent 60%),radial-gradient(ellipse 60% 40% at 50% 5%,rgba(56,189,248,.05),transparent 60%);animation:meshMove 12s ease-in-out infinite alternate}
+@keyframes meshMove{from{filter:blur(0) brightness(1)}to{filter:blur(5px) brightness(1.08)}}
+.gridlines{position:absolute;inset:0;background-image:linear-gradient(rgba(57,255,20,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.025) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,black,transparent)}
+
+.hero-inner{position:relative;z-index:2;width:100%}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;color:var(--accent);display:inline-flex;align-items:center;gap:.6rem;border:1px solid rgba(57,255,20,.22);padding:.4rem 1.1rem;background:rgba(57,255,20,.04);margin-bottom:2.5rem;animation:slideUp .8s ease both}
+.pulse{width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);animation:blip 1.6s infinite}
+@keyframes blip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--dim);letter-spacing:.12em;margin-bottom:.4rem;animation:slideUp .8s .08s ease both}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,13vw,12rem);line-height:.88;letter-spacing:2px;color:#fff;animation:slideUp .8s .15s ease both}
+.hero-name .ln2{-webkit-text-stroke:1.5px rgba(255,255,255,.18);color:transparent;display:block}
+.hero-name .ln2 .gl{-webkit-text-stroke:0;color:var(--accent);text-shadow:0 0 40px rgba(57,255,20,.55),0 0 80px rgba(57,255,20,.2)}
+.hero-role{font-family:'JetBrains Mono',monospace;font-size:clamp(.85rem,1.4vw,1.05rem);color:var(--pink);margin-top:1.5rem;margin-bottom:1.2rem;animation:slideUp .8s .22s ease both}
+.hero-role::before{content:'> '}
+.typing::after{content:'_';animation:blink .7s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-desc{font-size:1.05rem;font-weight:300;color:var(--dim);line-height:1.85;max-width:480px;margin-bottom:3rem;animation:slideUp .8s .3s ease both}
+.cta-row{display:flex;gap:1rem;align-items:center;animation:slideUp .8s .38s ease both}
+.btn-neon{font-family:'JetBrains Mono',monospace;font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#000;background:var(--accent);padding:.88rem 2.2rem;border:none;cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));transition:box-shadow .2s,transform .2s;display:inline-block}
+.btn-neon:hover{box-shadow:0 0 30px rgba(57,255,20,.6),0 0 60px rgba(57,255,20,.2);transform:translateY(-2px)}
+.btn-outline{font-family:'JetBrains Mono',monospace;font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--dim);border:1px solid var(--border);padding:.88rem 2rem;transition:color .2s,border-color .2s;display:inline-block}
+.btn-outline:hover{color:var(--accent);border-color:rgba(57,255,20,.35)}
+
+.hero-stats{position:absolute;right:5vw;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2.5rem;animation:slideUp .8s .45s ease both}
+.stat-item{text-align:right}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:3.8rem;line-height:1;color:var(--accent);text-shadow:0 0 30px rgba(57,255,20,.4)}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:.6rem;animation:fadeIn 1s 1.2s ease both}
+.s-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--accent),transparent);animation:sDrop 1.6s ease-in-out infinite}
+@keyframes sDrop{0%{transform:scaleY(0);transform-origin:top;opacity:1}50%{transform:scaleY(1);transform-origin:top;opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* TICKER */
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--ink);padding:.75rem 0}
+.ticker{display:flex;white-space:nowrap;animation:tick 22s linear infinite}
+.t-item{font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding:0 2rem}
+.t-item em{color:var(--accent);font-style:normal;margin-right:1rem}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION BASE */
+.sw{padding:8rem 5vw;max-width:1400px;margin:0 auto}
+.s-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+.s-eyebrow::before{content:'[ '}
+.s-eyebrow::after{content:' ]'}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);letter-spacing:1px;line-height:1;margin-bottom:1rem}
+
+/* ABOUT */
+#about{background:var(--ink);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.about-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:center}
+.about-card-wrap{position:relative}
+.about-card{background:var(--card);border:1px solid var(--border);padding:2.5rem;position:relative;overflow:hidden}
+.about-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(57,255,20,.04),transparent 50%)}
+.corner{position:absolute;width:16px;height:16px;border-color:var(--accent);border-style:solid;opacity:.55}
+.ctlc{top:-1px;left:-1px;border-width:2px 0 0 2px}.ctrc{top:-1px;right:-1px;border-width:2px 2px 0 0}
+.cblc{bottom:-1px;left:-1px;border-width:0 0 2px 2px}.cbrc{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.av-ring{width:88px;height:88px;border-radius:50%;background:conic-gradient(var(--accent),var(--pink),var(--blue),var(--accent));padding:2px;margin-bottom:1.5rem;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.av-in{width:100%;height:100%;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--accent);animation:spin 6s linear infinite reverse}
+.c-name{font-family:'Bebas Neue',sans-serif;font-size:1.75rem;letter-spacing:2px;margin-bottom:.2rem}
+.c-role{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--accent);margin-bottom:1.5rem;letter-spacing:.1em}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem}
+.chip{font-family:'JetBrains Mono',monospace;font-size:.57rem;letter-spacing:.05em;padding:.26rem .62rem;border:1px solid var(--border);color:var(--dim);transition:all .2s}
+.chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(57,255,20,.05)}
+.ftag{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--accent);background:var(--card);border:1px solid var(--border);padding:.55rem .95rem;animation:floatY 4s ease-in-out infinite alternate}
+.ft1{bottom:-1.5rem;right:-2rem;animation-delay:.3s}
+.ft2{top:-1.5rem;left:-2rem;animation-delay:1s;color:var(--pink);border-color:rgba(255,60,172,.2)}
+@keyframes floatY{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+.about-text p{color:var(--dim);line-height:1.9;font-weight:300;font-size:1.05rem;margin-bottom:1rem}
+.about-text p strong{color:var(--text);font-weight:500}
+
+/* PROJECTS */
+#projects{background:var(--bg)}
+.proj-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem}
+.proj-count-big{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;-webkit-text-stroke:1px rgba(57,255,20,.18);color:transparent}
+.proj-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1px;background:var(--border)}
+.pc{background:var(--card);padding:2.2rem;position:relative;overflow:hidden;transition:background .3s;cursor:none}
+.pc:hover{background:var(--ink)}
+.pc:nth-child(1){grid-column:span 7}
+.pc:nth-child(2){grid-column:span 5}
+.pc:nth-child(3){grid-column:span 4}
+.pc:nth-child(4){grid-column:span 4}
+.pc:nth-child(5){grid-column:span 4}
+.pc:nth-child(6){grid-column:span 5}
+.pc:nth-child(7){grid-column:span 7}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.pc:hover::before{opacity:1}
+.pc-num{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--dim);letter-spacing:.15em;margin-bottom:1.5rem;opacity:.45}
+.pc-icon{font-size:1.8rem;margin-bottom:1.2rem;display:block;transition:transform .3s}
+.pc:hover .pc-icon{transform:scale(1.15) rotate(-5deg)}
+.pc-name{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;margin-bottom:.6rem;transition:color .2s}
+.pc:hover .pc-name{color:var(--accent)}
+.pc-desc{font-size:.88rem;color:var(--dim);line-height:1.72;font-weight:300;margin-bottom:1.4rem}
+.pc-tags{display:flex;flex-wrap:wrap;gap:.32rem;margin-bottom:1.4rem}
+.pc-tag{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.06em;padding:.2rem .52rem;background:rgba(57,255,20,.07);color:var(--accent)}
+.pc-link{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--dim);display:flex;align-items:center;gap:.4rem;transition:color .2s,gap .2s}
+.pc:hover .pc-link{color:var(--accent);gap:.8rem}
+.pc-ghost{position:absolute;bottom:.5rem;right:1rem;font-family:'Bebas Neue',sans-serif;font-size:7rem;line-height:1;color:rgba(255,255,255,.018);pointer-events:none;letter-spacing:-2px;transition:color .3s}
+.pc:hover .pc-ghost{color:rgba(57,255,20,.04)}
+
+/* SKILLS */
+#skills{background:var(--ink);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:3.5rem}
+.sk{background:var(--card);padding:2rem 1.8rem;transition:background .2s}
+.sk:hover{background:var(--bg)}
+.sk-icon{font-size:2rem;margin-bottom:1rem}
+.sk-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;margin-bottom:.6rem}
+.sk-list{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--dim);line-height:2.1}
+
+/* CONTACT */
+#contact{background:var(--bg);position:relative;overflow:hidden}
+#contact::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(57,255,20,.055),transparent 70%);top:-200px;right:-200px;pointer-events:none}
+.contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:6rem;align-items:start}
+.contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,6rem);line-height:.95;letter-spacing:1px;margin-bottom:1.5rem}
+.contact-big em{font-style:normal;color:var(--accent)}
+.contact-sub{color:var(--dim);font-weight:300;line-height:1.85;margin-bottom:2.5rem;font-size:1.05rem}
+.c-links{display:flex;flex-direction:column;gap:.75rem}
+.c-link{display:flex;align-items:center;gap:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.05em;color:var(--dim);text-decoration:none;padding:1rem 1.4rem;border:1px solid var(--border);transition:all .25s;position:relative;overflow:hidden}
+.c-link::before{content:'';position:absolute;inset:0;background:rgba(57,255,20,.04);transform:translateX(-100%);transition:transform .3s}
+.c-link:hover::before{transform:translateX(0)}
+.c-link:hover{color:var(--accent);border-color:rgba(57,255,20,.3)}
+.c-icon{font-size:1rem;flex-shrink:0}
+.c-lbl{opacity:.45;font-size:.56rem;margin-left:auto}
+.form{display:flex;flex-direction:column;gap:.9rem}
+.fg{display:flex;flex-direction:column;gap:.32rem}
+.fl{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
+.fi,.fta{background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'Outfit',sans-serif;font-size:.95rem;padding:.85rem 1.1rem;outline:none;transition:border-color .2s,box-shadow .2s;resize:none}
+.fi:focus,.fta:focus{border-color:var(--accent);box-shadow:0 0 0 1px rgba(57,255,20,.12)}
+.fta{height:110px}
+.fsb{background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:all .25s;margin-top:.3rem}
+.fsb:hover{background:var(--accent);color:#000;box-shadow:0 0 30px rgba(57,255,20,.4)}
+
+footer{border-top:1px solid var(--border);padding:1.8rem 5vw;display:flex;align-items:center;justify-content:space-between}
+.f-copy{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--dim);letter-spacing:.08em}
+.f-avail{display:flex;align-items:center;gap:.6rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--accent);letter-spacing:.1em}
+.f-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);animation:blip 2s infinite}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .75s ease,transform .75s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}.nav-links{gap:1.2rem}
+  #hero{padding:6rem 1.5rem 5rem}.hero-stats{display:none}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:3rem}
+  .sw{padding:5rem 1.5rem}.sk-grid{grid-template-columns:repeat(2,1fr)}
+  .proj-grid{grid-template-columns:1fr}.pc{grid-column:span 1!important}
+  .proj-header{flex-direction:column;align-items:flex-start;gap:1rem}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="trail"></div>
+<div id="prog"></div>
+
+<nav>
+  <div class="nav-logo">HARSH<span style="color:#fff">_</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="mesh"></div>
+  <div class="gridlines"></div>
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="pulse"></span>Open to AI Engineer Roles</div>
+    <div class="hero-eyebrow">// Building machines that think, see &amp; predict</div>
+    <h1 class="hero-name">
+      HARSH<span class="ln2">SHAR<span class="gl">MA</span></span>
+    </h1>
+    <p class="hero-role"><span class="typing">AI Engineer &amp; Machine Learning Builder</span></p>
+    <p class="hero-desc">I don't just write code — I architect intelligence. From real-time face recognition to stock-predicting neural nets, every project is a step toward a smarter world.</p>
+    <div class="cta-row">
+      <a href="#projects" class="btn-neon">See My Work</a>
+      <a href="#contact" class="btn-outline">Hire Me</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-n">07</div><div class="stat-l">AI Projects</div></div>
+    <div class="stat-item"><div class="stat-n">5+</div><div class="stat-l">ML Models</div></div>
+    <div class="stat-item"><div class="stat-n">∞</div><div class="stat-l">Drive</div></div>
+  </div>
+  <div class="scroll-hint">SCROLL<div class="s-line"></div></div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="t-item"><em>✦</em>Machine Learning</span><span class="t-item"><em>✦</em>Deep Learning</span><span class="t-item"><em>✦</em>Computer Vision</span><span class="t-item"><em>✦</em>NLP</span><span class="t-item"><em>✦</em>Face Recognition</span><span class="t-item"><em>✦</em>Stock Prediction</span><span class="t-item"><em>✦</em>Recommender Systems</span><span class="t-item"><em>✦</em>Telegram Bots</span><span class="t-item"><em>✦</em>Data Analysis</span><span class="t-item"><em>✦</em>Text Summarization</span>
+    <span class="t-item"><em>✦</em>Machine Learning</span><span class="t-item"><em>✦</em>Deep Learning</span><span class="t-item"><em>✦</em>Computer Vision</span><span class="t-item"><em>✦</em>NLP</span><span class="t-item"><em>✦</em>Face Recognition</span><span class="t-item"><em>✦</em>Stock Prediction</span><span class="t-item"><em>✦</em>Recommender Systems</span><span class="t-item"><em>✦</em>Telegram Bots</span><span class="t-item"><em>✦</em>Data Analysis</span><span class="t-item"><em>✦</em>Text Summarization</span>
+  </div>
+</div>
+
+<section id="about"><div class="sw">
+  <div class="about-grid">
+    <div class="about-card-wrap reveal">
+      <div class="about-card">
+        <span class="corner ctlc"></span><span class="corner ctrc"></span><span class="corner cblc"></span><span class="corner cbrc"></span>
+        <div class="av-ring"><div class="av-in">HS</div></div>
+        <div class="c-name">HarshSharma</div>
+        <div class="c-role">// Aspiring AI Engineer</div>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">OpenCV</span><span class="chip">NLP</span><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">LSTM</span><span class="chip">CNN</span><span class="chip">Telegram API</span><span class="chip">Flask</span>
+        </div>
+      </div>
+      <div class="ftag ft1">🤖 7 Projects Shipped</div>
+      <div class="ftag ft2">⚡ Always Learning</div>
+    </div>
+    <div class="about-text reveal">
+      <div class="s-eyebrow">About Me</div>
+      <h2 class="s-title">Not just code.<br>Intelligence.</h2>
+      <p>I'm <strong>HarshSharma</strong> — an AI engineer in the making, obsessed with building systems that actually <strong>think, see, and predict</strong>. My playground is the intersection of mathematics, data, and real-world impact.</p>
+      <p>I've shipped <strong>7 complete AI projects</strong> spanning computer vision, NLP, deep learning, and predictive modeling. Each one taught me that the best AI doesn't just work — it solves something that matters.</p>
+      <p>My mission: become an engineer who builds AI systems that humans can genuinely trust and rely on — not just flashy demos, but <strong>robust, production-ready intelligence</strong>.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="projects"><div class="sw">
+  <div class="proj-header reveal">
+    <div>
+      <div class="s-eyebrow">My Work</div>
+      <h2 class="s-title">Projects That<br>Actually Work</h2>
+    </div>
+    <div class="proj-count-big">07</div>
+  </div>
+  <div class="proj-grid">
+    <div class="pc reveal">
+      <div class="pc-num">01 — FEATURED</div><span class="pc-icon">🤖</span>
+      <div class="pc-name">AI Chat Bot</div>
+      <div class="pc-desc">A conversational AI that understands natural language and maintains context across multi-turn dialogues. Built with NLP pipelines to deliver human-like responses for real-world queries.</div>
+      <div class="pc-tags"><span class="pc-tag">NLP</span><span class="pc-tag">Python</span><span class="pc-tag">Deep Learning</span><span class="pc-tag">Conversational AI</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">01</div>
+    </div>
+    <div class="pc reveal">
+      <div class="pc-num">02</div><span class="pc-icon">👁️</span>
+      <div class="pc-name">Face Recognition</div>
+      <div class="pc-desc">Real-time face detection and identity recognition using CNN-based feature extraction and facial landmark mapping. High accuracy under varying lighting conditions.</div>
+      <div class="pc-tags"><span class="pc-tag">OpenCV</span><span class="pc-tag">CNN</span><span class="pc-tag">Computer Vision</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">02</div>
+    </div>
+    <div class="pc reveal">
+      <div class="pc-num">03</div><span class="pc-icon">📈</span>
+      <div class="pc-name">ML Stock Predictor</div>
+      <div class="pc-desc">LSTM-powered stock price forecasting trained on historical market data. Produces trend visualizations and future price projections with quantified accuracy metrics.</div>
+      <div class="pc-tags"><span class="pc-tag">LSTM</span><span class="pc-tag">Time Series</span><span class="pc-tag">Scikit-learn</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">03</div>
+    </div>
+    <div class="pc reveal">
+      <div class="pc-num">04</div><span class="pc-icon">🎯</span>
+      <div class="pc-name">Recommender System</div>
+      <div class="pc-desc">Personalized ML recommendation engine using collaborative and content-based filtering to surface exactly what users want before they know they want it.</div>
+      <div class="pc-tags"><span class="pc-tag">Collaborative Filtering</span><span class="pc-tag">ML</span><span class="pc-tag">Python</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">04</div>
+    </div>
+    <div class="pc reveal">
+      <div class="pc-num">05</div><span class="pc-icon">📊</span>
+      <div class="pc-name">Data Analyzer</div>
+      <div class="pc-desc">End-to-end data pipeline: ingest → clean → transform → visualize. Turns messy raw datasets into crisp statistical insights and actionable visual summaries.</div>
+      <div class="pc-tags"><span class="pc-tag">Pandas</span><span class="pc-tag">Matplotlib</span><span class="pc-tag">EDA</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">05</div>
+    </div>
+    <div class="pc reveal">
+      <div class="pc-num">06</div><span class="pc-icon">✍️</span>
+      <div class="pc-name">Text Summarizer</div>
+      <div class="pc-desc">NLP tool that distills long documents into sharp, coherent summaries using both extractive and abstractive techniques — powered by transformer architectures.</div>
+      <div class="pc-tags"><span class="pc-tag">Transformers</span><span class="pc-tag">NLTK</span><span class="pc-tag">NLP</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">06</div>
+    </div>
+    <div class="pc reveal">
+      <div class="pc-num">07 — FEATURED</div><span class="pc-icon">✈️</span>
+      <div class="pc-name">Telegram Chat Bot</div>
+      <div class="pc-desc">A fully deployed intelligent bot living inside Telegram — handles commands, fetches live data via APIs, and converses naturally with users in real-time. Zero latency, always on.</div>
+      <div class="pc-tags"><span class="pc-tag">Telegram API</span><span class="pc-tag">Python</span><span class="pc-tag">Bot Framework</span><span class="pc-tag">Automation</span></div>
+      <div class="pc-link">View Project <span>→</span></div><div class="pc-ghost">07</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="skills"><div class="sw">
+  <div class="reveal"><div class="s-eyebrow">Expertise</div><h2 class="s-title">My Arsenal</h2></div>
+  <div class="sk-grid">
+    <div class="sk reveal"><div class="sk-icon">🧠</div><div class="sk-name">Machine Learning</div><div class="sk-list">Scikit-learn · XGBoost<br>Random Forest · SVM<br>Regression · PCA<br>K-Means Clustering</div></div>
+    <div class="sk reveal"><div class="sk-icon">🔮</div><div class="sk-name">Deep Learning</div><div class="sk-list">TensorFlow · PyTorch<br>Keras · CNN · RNN<br>LSTM · Transformers<br>Transfer Learning</div></div>
+    <div class="sk reveal"><div class="sk-icon">💬</div><div class="sk-name">NLP</div><div class="sk-list">NLTK · spaCy<br>HuggingFace<br>Summarization<br>Sentiment Analysis</div></div>
+    <div class="sk reveal"><div class="sk-icon">👁️</div><div class="sk-name">Computer Vision</div><div class="sk-list">OpenCV · YOLO<br>Face Detection<br>Image Classification<br>Object Recognition</div></div>
+    <div class="sk reveal"><div class="sk-icon">📊</div><div class="sk-name">Data Science</div><div class="sk-list">Pandas · NumPy<br>Matplotlib · Seaborn<br>Feature Engineering<br>Statistical Analysis</div></div>
+    <div class="sk reveal"><div class="sk-icon">⚙️</div><div class="sk-name">Dev &amp; Tools</div><div class="sk-list">Python · Git · GitHub<br>Flask · FastAPI<br>Telegram Bot API<br>Jupyter · Linux</div></div>
+    <div class="sk reveal"><div class="sk-icon">🚀</div><div class="sk-name">Deployment</div><div class="sk-list">Streamlit · Gradio<br>REST APIs · Pickle<br>ONNX · Docker<br>Model Serving</div></div>
+    <div class="sk reveal"><div class="sk-icon">🔬</div><div class="sk-name">Research</div><div class="sk-list">Paper Reading<br>Algorithm Design<br>Experiment Tracking<br>Hypothesis Testing</div></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="sw">
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="s-eyebrow">Contact</div>
+      <h2 class="contact-big">Let's Build<br><em>Something</em><br>Intelligent.</h2>
+      <p class="contact-sub">Have an AI project? Want to collaborate? Or just want to talk neural nets at midnight? I'm always down.</p>
+      <div class="c-links">
+        <a href="mailto:harsh3h3@gmail.com" class="c-link">
+          <span class="c-icon">📧</span>harsh3h3@gmail.com<span class="c-lbl">EMAIL</span>
+        </a>
+        <a href="https://github.com/harsh31415926" target="_blank" class="c-link">
+          <span class="c-icon">🐙</span>github.com/harsh31415926<span class="c-lbl">GITHUB</span>
+        </a>
+        <a href="https://www.linkedin.com/in/harshsharma-engineer/" target="_blank" class="c-link">
+          <span class="c-icon">💼</span>harshsharma-engineer<span class="c-lbl">LINKEDIN</span>
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="form">
+        <div class="fg"><label class="fl">Your Name</label><input class="fi" type="text" placeholder="Alan Turing"></div>
+        <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="alan@enigma.ai"></div>
+        <div class="fg"><label class="fl">Message</label><textarea class="fta" placeholder="I have an idea for an AI project..."></textarea></div>
+        <button class="fsb" id="sendBtn">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer>
+  <div class="f-copy">© 2025 HarshSharma. Built different. 🤖</div>
+  <div class="f-avail"><span class="f-dot"></span>Available for AI Engineer Roles</div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),trail=document.getElementById('trail'),prog=document.getElementById('prog');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`});
+(function animT(){tx+=(mx-tx)*.1;ty+=(my-ty)*.1;trail.style.transform=`translate(${tx-15}px,${ty-15}px)`;requestAnimationFrame(animT)})();
+document.querySelectorAll('a,button,.pc').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('big'));el.addEventListener('mouseleave',()=>cur.classList.remove('big'))});
+window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%'});
+
+// Reveal
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*.08)+'s';io.observe(el)});
+
+// Typing
+const phrases=['AI Engineer & Machine Learning Builder','Computer Vision Specialist','NLP Enthusiast','Deep Learning Practitioner'];
+let pi=0,ci=0,del=false;
+const typEl=document.querySelector('.typing');
+function type(){const ph=phrases[pi];if(!del){typEl.textContent=ph.slice(0,ci+1);ci++;if(ci===ph.length){del=true;setTimeout(type,2200);return}}else{typEl.textContent=ph.slice(0,ci-1);ci--;if(ci===0){del=false;pi=(pi+1)%phrases.length}}setTimeout(type,del?40:85)}
+type();
+
+// Form
+document.getElementById('sendBtn').addEventListener('click',function(){this.textContent='✓ Sent!';this.style.background='rgba(57,255,20,.1)';this.style.color='var(--accent)';setTimeout(()=>{this.textContent='Send Message →';this.style.background='';this.style.color=''},3000)});
+</script>
+</body>
+</html>
