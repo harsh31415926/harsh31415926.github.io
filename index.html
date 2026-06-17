@@ -1,580 +1,1360 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Harsh Sharma — AI Engineer</title>
-<meta name="description" content="AI Engineer building agentic systems, LLM applications, and production ML — LangGraph, LangChain, MCP, multi-agent architectures.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-:root{
-  --bg:#0d1117;
-  --bg-raised:#11161d;
-  --bg-card:#141a22;
-  --line:rgba(230,233,239,0.08);
-  --line-strong:rgba(230,233,239,0.14);
-  --ink:#e6e9ef;
-  --ink-dim:#8b94a3;
-  --ink-faint:#5a6373;
-  --accent:#6e9eff;
-  --accent-soft:rgba(110,158,255,0.12);
-  --accent-dim:#4a6db8;
-}
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
-}
-body{
-  background:var(--bg);color:var(--ink);
-  font-family:'Inter',sans-serif;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-  line-height:1.5;
-}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harsh Sharma — AI Engineer</title>
+  <meta name="description"
+    content="AI Engineer building agentic systems, LLM applications, and production ML — LangGraph, LangChain, MCP, multi-agent architectures.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* ---------- shared ---------- */
-.wrap{max-width:1180px;margin:0 auto;padding:0 6vw}
-.eyebrow{
-  font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;
-  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:0.6rem;margin-bottom:1.1rem;
-}
-.eyebrow::before{content:'';width:7px;height:1px;background:var(--accent)}
-.section-title{
-  font-family:'Fraunces',serif;font-weight:500;font-style:normal;
-  font-size:clamp(1.9rem,3.4vw,2.7rem);letter-spacing:-0.01em;line-height:1.12;color:var(--ink);
-}
-.section-sub{color:var(--ink-dim);font-size:1.02rem;font-weight:400;max-width:560px;margin-top:0.9rem;line-height:1.65}
-section{padding:7.5rem 0}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
-.reveal.vis{opacity:1;transform:translateY(0)}
+    html {
+      scroll-behavior: smooth
+    }
 
-/* ---------- nav ---------- */
-nav{
-  position:fixed;top:0;left:0;width:100%;z-index:200;
-  background:rgba(13,17,23,0.82);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line);
-}
-.nav-inner{max-width:1180px;margin:0 auto;padding:0 6vw;height:64px;display:flex;align-items:center;justify-content:space-between}
-.nav-mark{font-family:'Fraunces',serif;font-weight:500;font-size:1.18rem;letter-spacing:-0.01em;text-decoration:none;display:flex;align-items:center;gap:0.55rem}
-.nav-mark .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.nav-links{display:flex;gap:2.2rem;list-style:none}
-.nav-links a{font-size:0.875rem;font-weight:500;color:var(--ink-dim);text-decoration:none;transition:color .2s}
-.nav-links a:hover{color:var(--ink)}
-.nav-cta{
-  font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;color:var(--bg);
-  background:var(--ink);padding:0.5rem 1.1rem;border-radius:7px;text-decoration:none;transition:background .2s, transform .2s;
-}
-.nav-cta:hover{background:var(--accent);transform:translateY(-1px)}
-.nav-toggle{display:none}
+    :root {
+      --bg: #0d1117;
+      --bg-raised: #11161d;
+      --bg-card: #141a22;
+      --line: rgba(230, 233, 239, 0.08);
+      --line-strong: rgba(230, 233, 239, 0.14);
+      --ink: #e6e9ef;
+      --ink-dim: #8b94a3;
+      --ink-faint: #5a6373;
+      --accent: #6e9eff;
+      --accent-soft: rgba(110, 158, 255, 0.12);
+      --accent-dim: #4a6db8;
+    }
 
-/* ---------- hero ---------- */
-#hero{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
-  padding-top:7rem;position:relative;
-}
-.hero-bg{
-  position:absolute;inset:0;pointer-events:none;overflow:hidden;
-}
-.hero-bg svg{position:absolute;top:50%;right:-4%;transform:translateY(-50%);width:46%;min-width:420px;opacity:0.9}
-.hero-bg::after{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 78% 45%, rgba(110,158,255,0.08), transparent 65%);
-}
-.hero-eyebrow-row{display:flex;align-items:center;gap:0.7rem;margin-bottom:1.6rem}
-.status-pill{
-  font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ink-dim);
-  border:1px solid var(--line-strong);padding:0.36rem 0.85rem;border-radius:99px;
-  display:inline-flex;align-items:center;gap:0.5rem;
-}
-.status-pill .ld{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,0.18)}
-.hero-title{
-  font-family:'Fraunces',serif;font-weight:500;
-  font-size:clamp(2.6rem,6.4vw,4.6rem);line-height:1.05;letter-spacing:-0.015em;
-  max-width:780px;color:var(--ink);
-}
-.hero-title em{font-style:italic;color:var(--accent);font-weight:500}
-.hero-desc{
-  font-size:1.12rem;color:var(--ink-dim);max-width:540px;margin-top:1.6rem;line-height:1.7;font-weight:400;
-}
-.hero-actions{display:flex;align-items:center;gap:1rem;margin-top:2.4rem;flex-wrap:wrap}
-.btn-primary{
-  font-family:'Inter',sans-serif;font-weight:600;font-size:0.92rem;
-  background:var(--ink);color:var(--bg);padding:0.85rem 1.6rem;border-radius:8px;
-  text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;
-  transition:transform .18s, background .18s;
-}
-.btn-primary:hover{background:var(--accent);transform:translateY(-2px)}
-.btn-secondary{
-  font-family:'Inter',sans-serif;font-weight:600;font-size:0.92rem;color:var(--ink);
-  border:1px solid var(--line-strong);padding:0.85rem 1.6rem;border-radius:8px;text-decoration:none;
-  display:inline-flex;align-items:center;gap:0.5rem;transition:border-color .18s, color .18s, transform .18s;
-}
-.btn-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important
+      }
+    }
 
-.hero-meta{display:flex;gap:2.8rem;margin-top:4.2rem;flex-wrap:wrap}
-.meta-item{display:flex;flex-direction:column;gap:0.3rem}
-.meta-n{font-family:'Fraunces',serif;font-size:1.7rem;color:var(--ink);font-weight:500}
-.meta-l{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--ink-faint);letter-spacing:0.06em;text-transform:uppercase}
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
 
-/* ---------- node graph signature svg ---------- */
-.ng-node{fill:var(--bg-card);stroke:var(--line-strong);stroke-width:1}
-.ng-node.active{stroke:var(--accent);fill:var(--accent-soft)}
-.ng-edge{stroke:var(--line-strong);stroke-width:1}
-.ng-edge.active{stroke:var(--accent);stroke-dasharray:4 4;animation:dash 3s linear infinite}
-.ng-label{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:var(--ink-faint)}
-@keyframes dash{to{stroke-dashoffset:-32}}
-.ng-pulse{animation:pulseNode 2.6s ease-in-out infinite}
-@keyframes pulseNode{0%,100%{opacity:1}50%{opacity:0.45}}
+    a {
+      color: inherit
+    }
 
-/* ---------- marquee strip ---------- */
-.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-raised);padding:1.1rem 0;overflow:hidden}
-.strip-track{display:flex;white-space:nowrap;animation:scroll 32s linear infinite;width:max-content}
-.strip-item{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:var(--ink-faint);padding:0 1.8rem;display:flex;align-items:center;gap:1.8rem}
-.strip-item .sep{color:var(--line-strong)}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px
+    }
 
-/* ---------- about ---------- */
-#about .wrap{display:grid;grid-template-columns:0.95fr 1.3fr;gap:5rem;align-items:start}
-.about-card{
-  background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:2.2rem;position:relative;
-}
-.about-id{display:flex;align-items:center;gap:1rem;margin-bottom:1.6rem}
-.about-avatar{
-  width:54px;height:54px;border-radius:12px;background:linear-gradient(150deg,var(--accent),#3a5cad);
-  display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:500;font-size:1.2rem;color:#fff;
-}
-.about-name{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:500}
-.about-role{font-size:0.84rem;color:var(--ink-dim);margin-top:0.15rem}
-.about-divider{height:1px;background:var(--line);margin:1.5rem 0}
-.role-list{display:flex;flex-direction:column;gap:0.85rem}
-.role-row{display:flex;align-items:baseline;gap:0.7rem;font-size:0.9rem}
-.role-row .rk{color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;font-size:0.74rem;min-width:88px}
-.role-row .rv{color:var(--ink)}
-.about-text p{color:var(--ink-dim);font-size:1.04rem;line-height:1.8;margin-bottom:1.15rem;font-weight:400}
-.about-text strong{color:var(--ink);font-weight:600}
-.about-links{display:flex;gap:0.85rem;margin-top:1.8rem;flex-wrap:wrap}
-.pill-link{
-  font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--ink-dim);
-  border:1px solid var(--line-strong);padding:0.5rem 0.95rem;border-radius:99px;text-decoration:none;
-  transition:border-color .2s,color .2s;display:inline-flex;align-items:center;gap:0.45rem;
-}
-.pill-link:hover{border-color:var(--accent);color:var(--accent)}
+    /* ---------- shared ---------- */
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 6vw
+    }
 
-/* ---------- projects ---------- */
-#projects{background:var(--bg-raised);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.proj-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.4rem;gap:2rem;flex-wrap:wrap}
-.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
-.proj-card{
-  background:var(--bg-card);border:1px solid var(--line);border-radius:16px;
-  padding:1.9rem;display:flex;flex-direction:column;transition:border-color .25s, transform .25s, box-shadow .25s;
-  position:relative;
-}
-.proj-card.featured{grid-column:span 2}
-.proj-card:hover{border-color:var(--line-strong);transform:translateY(-3px);box-shadow:0 12px 32px -8px rgba(0,0,0,0.45)}
-.proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.1rem}
-.proj-icon{
-  width:38px;height:38px;border-radius:9px;background:var(--accent-soft);border:1px solid rgba(110,158,255,0.25);
-  display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;
-}
-.proj-badge{font-family:'IBM Plex Mono',monospace;font-size:0.64rem;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(110,158,255,0.25);background:var(--accent-soft);padding:0.28rem 0.6rem;border-radius:99px;white-space:nowrap}
-.proj-name{font-family:'Fraunces',serif;font-weight:500;font-size:1.3rem;margin-bottom:0.55rem;letter-spacing:-0.005em}
-.proj-desc{color:var(--ink-dim);font-size:0.92rem;line-height:1.65;margin-bottom:1.2rem;flex:1}
-.proj-features{list-style:none;display:flex;flex-direction:column;gap:0.42rem;margin-bottom:1.3rem}
-.proj-features li{font-size:0.83rem;color:var(--ink-dim);display:flex;align-items:flex-start;gap:0.55rem;line-height:1.5}
-.proj-features li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);margin-top:0.5rem;flex-shrink:0}
-.proj-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.4rem}
-.proj-tag{font-family:'IBM Plex Mono',monospace;font-size:0.66rem;color:var(--ink-dim);background:rgba(230,233,239,0.05);border:1px solid var(--line);padding:0.26rem 0.6rem;border-radius:6px}
-.proj-links{display:flex;gap:0.75rem;margin-top:auto;padding-top:1.1rem;border-top:1px solid var(--line)}
-.proj-link{
-  flex:1;text-align:center;font-size:0.83rem;font-weight:600;padding:0.65rem 0.9rem;border-radius:8px;
-  text-decoration:none;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:0.4rem;
-}
-.proj-link.gh{border:1px solid var(--line-strong);color:var(--ink)}
-.proj-link.gh:hover{border-color:var(--accent);color:var(--accent)}
-.proj-link.live{background:var(--ink);color:var(--bg)}
-.proj-link.live:hover{background:var(--accent)}
-.proj-link.disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.1rem;
+    }
 
-@media(max-width:880px){
-  .proj-grid{grid-template-columns:1fr}
-  .proj-card.featured{grid-column:span 1}
-}
+    .eyebrow::before {
+      content: '';
+      width: 7px;
+      height: 1px;
+      background: var(--accent)
+    }
 
-/* ---------- skills ---------- */
-.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:3rem}
-.skill-col{background:var(--bg-card);padding:2rem 1.7rem}
-.skill-head{display:flex;align-items:center;gap:0.6rem;margin-bottom:1.3rem}
-.skill-icon{font-size:1.15rem}
-.skill-name{font-family:'Fraunces',serif;font-weight:500;font-size:1.02rem}
-.skill-list{list-style:none;display:flex;flex-direction:column;gap:0.62rem}
-.skill-list li{font-size:0.85rem;color:var(--ink-dim);font-family:'IBM Plex Mono',monospace;font-size:0.78rem}
-@media(max-width:880px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-style: normal;
+      font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+      letter-spacing: -0.01em;
+      line-height: 1.12;
+      color: var(--ink);
+    }
 
-/* ---------- contact ---------- */
-#contact{position:relative;overflow:hidden}
-#contact::before{
-  content:'';position:absolute;width:680px;height:680px;border-radius:50%;
-  background:radial-gradient(circle, rgba(110,158,255,0.07), transparent 70%);
-  top:-280px;right:-220px;pointer-events:none;
-}
-.contact-inner{text-align:center;max-width:680px;margin:0 auto;position:relative;z-index:1}
-.contact-title{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:-0.015em;line-height:1.12}
-.contact-title em{color:var(--accent);font-style:italic}
-.contact-sub{color:var(--ink-dim);font-size:1.05rem;margin-top:1.3rem;line-height:1.7}
-.contact-actions{display:flex;justify-content:center;gap:1rem;margin-top:2.6rem;flex-wrap:wrap}
-.contact-channels{display:flex;justify-content:center;gap:1.6rem;margin-top:3.4rem;flex-wrap:wrap}
-.channel{display:flex;align-items:center;gap:0.55rem;font-size:0.88rem;color:var(--ink-dim);text-decoration:none;transition:color .2s}
-.channel:hover{color:var(--accent)}
-.channel .ci{font-size:1.05rem}
+    .section-sub {
+      color: var(--ink-dim);
+      font-size: 1.02rem;
+      font-weight: 400;
+      max-width: 560px;
+      margin-top: 0.9rem;
+      line-height: 1.65
+    }
 
-footer{border-top:1px solid var(--line);padding:2rem 0}
-.footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.footer-copy{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-faint)}
-.footer-avail{display:flex;align-items:center;gap:0.55rem;font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-dim)}
-.footer-avail .fd{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,0.18)}
+    section {
+      padding: 7.5rem 0
+    }
 
-@media(max-width:880px){
-  .nav-links{display:none}
-  #about .wrap{grid-template-columns:1fr;gap:2.6rem}
-  section{padding:5rem 0}
-  .hero-bg svg{display:none}
-  .hero-meta{gap:2rem}
-}
-</style>
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .6s cubic-bezier(.2, .6, .2, 1), transform .6s cubic-bezier(.2, .6, .2, 1)
+    }
+
+    .reveal.vis {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    /* ---------- nav ---------- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 200;
+      background: rgba(13, 17, 23, 0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 6vw;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .nav-mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.18rem;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem
+    }
+
+    .nav-mark .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft)
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color .2s
+    }
+
+    .nav-links a:hover {
+      color: var(--ink)
+    }
+
+    .nav-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--bg);
+      background: var(--ink);
+      padding: 0.5rem 1.1rem;
+      border-radius: 7px;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      transform: translateY(-1px)
+    }
+
+    .nav-toggle {
+      display: none
+    }
+
+    /* ---------- hero ---------- */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 7rem;
+      position: relative;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-bg svg {
+      position: absolute;
+      top: 50%;
+      right: -4%;
+      transform: translateY(-50%);
+      width: 46%;
+      min-width: 420px;
+      opacity: 0.9
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 78% 45%, rgba(110, 158, 255, 0.08), transparent 65%);
+    }
+
+    .hero-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.6rem
+    }
+
+    .status-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--ink-dim);
+      border: 1px solid var(--line-strong);
+      padding: 0.36rem 0.85rem;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-pill .ld {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18)
+    }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: clamp(2.6rem, 6.4vw, 4.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      max-width: 780px;
+      color: var(--ink);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 500
+    }
+
+    .hero-desc {
+      font-size: 1.12rem;
+      color: var(--ink-dim);
+      max-width: 540px;
+      margin-top: 1.6rem;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.4rem;
+      flex-wrap: wrap
+    }
+
+    .btn-primary {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 0.85rem 1.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform .18s, background .18s;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-2px)
+    }
+
+    .btn-secondary {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--ink);
+      border: 1px solid var(--line-strong);
+      padding: 0.85rem 1.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: border-color .18s, color .18s, transform .18s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px)
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2.8rem;
+      margin-top: 4.2rem;
+      flex-wrap: wrap
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem
+    }
+
+    .meta-n {
+      font-family: 'Fraunces', serif;
+      font-size: 1.7rem;
+      color: var(--ink);
+      font-weight: 500
+    }
+
+    .meta-l {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase
+    }
+
+    /* ---------- node graph signature svg ---------- */
+    .ng-node {
+      fill: var(--bg-card);
+      stroke: var(--line-strong);
+      stroke-width: 1
+    }
+
+    .ng-node.active {
+      stroke: var(--accent);
+      fill: var(--accent-soft)
+    }
+
+    .ng-edge {
+      stroke: var(--line-strong);
+      stroke-width: 1
+    }
+
+    .ng-edge.active {
+      stroke: var(--accent);
+      stroke-dasharray: 4 4;
+      animation: dash 3s linear infinite
+    }
+
+    .ng-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      fill: var(--ink-faint)
+    }
+
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -32
+      }
+    }
+
+    .ng-pulse {
+      animation: pulseNode 2.6s ease-in-out infinite
+    }
+
+    @keyframes pulseNode {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.45
+      }
+    }
+
+    /* ---------- marquee strip ---------- */
+    .strip {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-raised);
+      padding: 1.1rem 0;
+      overflow: hidden
+    }
+
+    .strip-track {
+      display: flex;
+      white-space: nowrap;
+      animation: scroll 32s linear infinite;
+      width: max-content
+    }
+
+    .strip-item {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      padding: 0 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1.8rem
+    }
+
+    .strip-item .sep {
+      color: var(--line-strong)
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    /* ---------- about ---------- */
+    #about .wrap {
+      display: grid;
+      grid-template-columns: 0.95fr 1.3fr;
+      gap: 5rem;
+      align-items: start
+    }
+
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 2.2rem;
+      position: relative;
+    }
+
+    .about-id {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.6rem
+    }
+
+    .about-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      background: linear-gradient(150deg, var(--accent), #3a5cad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .about-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 500
+    }
+
+    .about-role {
+      font-size: 0.84rem;
+      color: var(--ink-dim);
+      margin-top: 0.15rem
+    }
+
+    .about-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 1.5rem 0
+    }
+
+    .role-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem
+    }
+
+    .role-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7rem;
+      font-size: 0.9rem
+    }
+
+    .role-row .rk {
+      color: var(--ink-faint);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      min-width: 88px
+    }
+
+    .role-row .rv {
+      color: var(--ink)
+    }
+
+    .about-text p {
+      color: var(--ink-dim);
+      font-size: 1.04rem;
+      line-height: 1.8;
+      margin-bottom: 1.15rem;
+      font-weight: 400
+    }
+
+    .about-text strong {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    .about-links {
+      display: flex;
+      gap: 0.85rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap
+    }
+
+    .pill-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--ink-dim);
+      border: 1px solid var(--line-strong);
+      padding: 0.5rem 0.95rem;
+      border-radius: 99px;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .pill-link:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    /* ---------- projects ---------- */
+    #projects {
+      background: var(--bg-raised);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line)
+    }
+
+    .proj-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3.4rem;
+      gap: 2rem;
+      flex-wrap: wrap
+    }
+
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem
+    }
+
+    .proj-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.9rem;
+      display: flex;
+      flex-direction: column;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+      position: relative;
+    }
+
+    .proj-card.featured {
+      grid-column: span 2
+    }
+
+    .proj-card:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.45)
+    }
+
+    .proj-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.1rem
+    }
+
+    .proj-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(110, 158, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+    }
+
+    .proj-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(110, 158, 255, 0.25);
+      background: var(--accent-soft);
+      padding: 0.28rem 0.6rem;
+      border-radius: 99px;
+      white-space: nowrap
+    }
+
+    .proj-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.3rem;
+      margin-bottom: 0.55rem;
+      letter-spacing: -0.005em
+    }
+
+    .proj-desc {
+      color: var(--ink-dim);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 1.2rem;
+      flex: 1
+    }
+
+    .proj-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      margin-bottom: 1.3rem
+    }
+
+    .proj-features li {
+      font-size: 0.83rem;
+      color: var(--ink-dim);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      line-height: 1.5
+    }
+
+    .proj-features li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 0.5rem;
+      flex-shrink: 0
+    }
+
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.4rem
+    }
+
+    .proj-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.66rem;
+      color: var(--ink-dim);
+      background: rgba(230, 233, 239, 0.05);
+      border: 1px solid var(--line);
+      padding: 0.26rem 0.6rem;
+      border-radius: 6px
+    }
+
+    .proj-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--line)
+    }
+
+    .proj-link {
+      flex: 1;
+      text-align: center;
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 0.65rem 0.9rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .proj-link.gh {
+      border: 1px solid var(--line-strong);
+      color: var(--ink)
+    }
+
+    .proj-link.gh:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .proj-link.live {
+      background: var(--ink);
+      color: var(--bg)
+    }
+
+    .proj-link.live:hover {
+      background: var(--accent)
+    }
+
+    .proj-link.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none
+    }
+
+    @media(max-width:880px) {
+      .proj-grid {
+        grid-template-columns: 1fr
+      }
+
+      .proj-card.featured {
+        grid-column: span 1
+      }
+    }
+
+    /* ---------- skills ---------- */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      margin-top: 3rem
+    }
+
+    .skill-col {
+      background: var(--bg-card);
+      padding: 2rem 1.7rem
+    }
+
+    .skill-head {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.3rem
+    }
+
+    .skill-icon {
+      font-size: 1.15rem
+    }
+
+    .skill-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.02rem
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.62rem
+    }
+
+    .skill-list li {
+      font-size: 0.85rem;
+      color: var(--ink-dim);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem
+    }
+
+    @media(max-width:880px) {
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    /* ---------- contact ---------- */
+    #contact {
+      position: relative;
+      overflow: hidden
+    }
+
+    #contact::before {
+      content: '';
+      position: absolute;
+      width: 680px;
+      height: 680px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(110, 158, 255, 0.07), transparent 70%);
+      top: -280px;
+      right: -220px;
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1
+    }
+
+    .contact-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+      letter-spacing: -0.015em;
+      line-height: 1.12
+    }
+
+    .contact-title em {
+      color: var(--accent);
+      font-style: italic
+    }
+
+    .contact-sub {
+      color: var(--ink-dim);
+      font-size: 1.05rem;
+      margin-top: 1.3rem;
+      line-height: 1.7
+    }
+
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2.6rem;
+      flex-wrap: wrap
+    }
+
+    .contact-channels {
+      display: flex;
+      justify-content: center;
+      gap: 1.6rem;
+      margin-top: 3.4rem;
+      flex-wrap: wrap
+    }
+
+    .channel {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.88rem;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color .2s
+    }
+
+    .channel:hover {
+      color: var(--accent)
+    }
+
+    .channel .ci {
+      font-size: 1.05rem
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 0
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem
+    }
+
+    .footer-copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-faint)
+    }
+
+    .footer-avail {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-dim)
+    }
+
+    .footer-avail .fd {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18)
+    }
+
+    @media(max-width:880px) {
+      .nav-links {
+        display: none
+      }
+
+      #about .wrap {
+        grid-template-columns: 1fr;
+        gap: 2.6rem
+      }
+
+      section {
+        padding: 5rem 0
+      }
+
+      .hero-bg svg {
+        display: none
+      }
+
+      .hero-meta {
+        gap: 2rem
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a href="#hero" class="nav-mark"><span class="dot"></span>Harsh Sharma</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <a href="#contact" class="nav-cta">Get in touch</a>
-  </div>
-</nav>
-
-<section id="hero">
-  <div class="hero-bg">
-    <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- multi-agent node graph signature -->
-      <line class="ng-edge active" x1="210" y1="80" x2="120" y2="180"/>
-      <line class="ng-edge active" x1="210" y1="80" x2="300" y2="180"/>
-      <line class="ng-edge" x1="120" y1="180" x2="210" y2="80"/>
-      <line class="ng-edge active" x1="120" y1="180" x2="90" y2="300"/>
-      <line class="ng-edge" x1="120" y1="180" x2="210" y2="300"/>
-      <line class="ng-edge active" x1="300" y1="180" x2="210" y2="300"/>
-      <line class="ng-edge" x1="300" y1="180" x2="340" y2="300"/>
-      <line class="ng-edge active" x1="210" y1="300" x2="210" y2="370"/>
-
-      <circle class="ng-node active ng-pulse" cx="210" cy="80" r="20"/>
-      <circle class="ng-node" cx="120" cy="180" r="16"/>
-      <circle class="ng-node active" cx="300" cy="180" r="16"/>
-      <circle class="ng-node" cx="90" cy="300" r="13"/>
-      <circle class="ng-node active" cx="210" cy="300" r="16"/>
-      <circle class="ng-node" cx="340" cy="300" r="13"/>
-      <circle class="ng-node active ng-pulse" cx="210" cy="370" r="14"/>
-
-      <text class="ng-label" x="210" y="56" text-anchor="middle">orchestrator</text>
-      <text class="ng-label" x="120" y="158" text-anchor="middle">tool</text>
-      <text class="ng-label" x="300" y="158" text-anchor="middle">retriever</text>
-      <text class="ng-label" x="210" y="278" text-anchor="middle">memory</text>
-      <text class="ng-label" x="210" y="396" text-anchor="middle">output</text>
-    </svg>
-  </div>
-
-  <div class="wrap">
-    <div class="hero-eyebrow-row">
-      <span class="status-pill"><span class="ld"></span>Open to AI Engineer roles</span>
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="nav-mark"><span class="dot"></span>Harsh Sharma</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Get in touch</a>
     </div>
-    <h1 class="hero-title">I build intelligent systems<br>that <em>reason, plan,</em> and <em>act</em>.</h1>
-    <p class="hero-desc">AI Engineer focused on agentic architectures, LLM-powered applications, and production machine learning — from multi-agent orchestration with LangGraph to predictive models that ship.</p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn-primary">View projects →</a>
-      <a href="https://github.com/harsh31415926" target="_blank" rel="noopener" class="btn-secondary">GitHub ↗</a>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-bg">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- multi-agent node graph signature -->
+        <line class="ng-edge active" x1="210" y1="80" x2="120" y2="180" />
+        <line class="ng-edge active" x1="210" y1="80" x2="300" y2="180" />
+        <line class="ng-edge" x1="120" y1="180" x2="210" y2="80" />
+        <line class="ng-edge active" x1="120" y1="180" x2="90" y2="300" />
+        <line class="ng-edge" x1="120" y1="180" x2="210" y2="300" />
+        <line class="ng-edge active" x1="300" y1="180" x2="210" y2="300" />
+        <line class="ng-edge" x1="300" y1="180" x2="340" y2="300" />
+        <line class="ng-edge active" x1="210" y1="300" x2="210" y2="370" />
+
+        <circle class="ng-node active ng-pulse" cx="210" cy="80" r="20" />
+        <circle class="ng-node" cx="120" cy="180" r="16" />
+        <circle class="ng-node active" cx="300" cy="180" r="16" />
+        <circle class="ng-node" cx="90" cy="300" r="13" />
+        <circle class="ng-node active" cx="210" cy="300" r="16" />
+        <circle class="ng-node" cx="340" cy="300" r="13" />
+        <circle class="ng-node active ng-pulse" cx="210" cy="370" r="14" />
+
+        <text class="ng-label" x="210" y="56" text-anchor="middle">orchestrator</text>
+        <text class="ng-label" x="120" y="158" text-anchor="middle">tool</text>
+        <text class="ng-label" x="300" y="158" text-anchor="middle">retriever</text>
+        <text class="ng-label" x="210" y="278" text-anchor="middle">memory</text>
+        <text class="ng-label" x="210" y="396" text-anchor="middle">output</text>
+      </svg>
     </div>
-    <div class="hero-meta">
-      <div class="meta-item"><span class="meta-n">6</span><span class="meta-l">Shipped Systems</span></div>
-      <div class="meta-item"><span class="meta-n">Multi-Agent</span><span class="meta-l">Core Specialty</span></div>
-      <div class="meta-item"><span class="meta-n">LangGraph</span><span class="meta-l">Primary Stack</span></div>
+
+    <div class="wrap">
+      <div class="hero-eyebrow-row">
+        <span class="status-pill"><span class="ld"></span>Open to AI Engineer roles</span>
+      </div>
+      <h1 class="hero-title">I build intelligent systems<br>that <em>reason, plan,</em> and <em>act</em>.</h1>
+      <p class="hero-desc">AI Engineer focused on agentic architectures, LLM-powered applications, and production
+        machine learning — from multi-agent orchestration with LangGraph to predictive models that ship.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View projects →</a>
+        <a href="https://github.com/harsh31415926" target="_blank" rel="noopener" class="btn-secondary">GitHub ↗</a>
+      </div>
+      <div class="hero-meta">
+        <div class="meta-item"><span class="meta-n">6</span><span class="meta-l">Shipped Systems</span></div>
+        <div class="meta-item"><span class="meta-n">Multi-Agent</span><span class="meta-l">Core Specialty</span></div>
+        <div class="meta-item"><span class="meta-n">LangGraph</span><span class="meta-l">Primary Stack</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="strip-track">
+      <span class="strip-item">Agentic AI<span class="sep">/</span></span>
+      <span class="strip-item">LangGraph<span class="sep">/</span></span>
+      <span class="strip-item">LangChain<span class="sep">/</span></span>
+      <span class="strip-item">Model Context Protocol<span class="sep">/</span></span>
+      <span class="strip-item">Retrieval-Augmented Generation<span class="sep">/</span></span>
+      <span class="strip-item">Predictive Modeling<span class="sep">/</span></span>
+      <span class="strip-item">Production ML<span class="sep">/</span></span>
+      <span class="strip-item">Agentic AI<span class="sep">/</span></span>
+      <span class="strip-item">LangGraph<span class="sep">/</span></span>
+      <span class="strip-item">LangChain<span class="sep">/</span></span>
+      <span class="strip-item">Model Context Protocol<span class="sep">/</span></span>
+      <span class="strip-item">Retrieval-Augmented Generation<span class="sep">/</span></span>
+      <span class="strip-item">Predictive Modeling<span class="sep">/</span></span>
+      <span class="strip-item">Production ML<span class="sep">/</span></span>
     </div>
   </div>
-</section>
 
-<div class="strip">
-  <div class="strip-track">
-    <span class="strip-item">Agentic AI<span class="sep">/</span></span>
-    <span class="strip-item">LangGraph<span class="sep">/</span></span>
-    <span class="strip-item">LangChain<span class="sep">/</span></span>
-    <span class="strip-item">Model Context Protocol<span class="sep">/</span></span>
-    <span class="strip-item">Retrieval-Augmented Generation<span class="sep">/</span></span>
-    <span class="strip-item">Predictive Modeling<span class="sep">/</span></span>
-    <span class="strip-item">Production ML<span class="sep">/</span></span>
-    <span class="strip-item">Agentic AI<span class="sep">/</span></span>
-    <span class="strip-item">LangGraph<span class="sep">/</span></span>
-    <span class="strip-item">LangChain<span class="sep">/</span></span>
-    <span class="strip-item">Model Context Protocol<span class="sep">/</span></span>
-    <span class="strip-item">Retrieval-Augmented Generation<span class="sep">/</span></span>
-    <span class="strip-item">Predictive Modeling<span class="sep">/</span></span>
-    <span class="strip-item">Production ML<span class="sep">/</span></span>
-  </div>
-</div>
+  <section id="about">
+    <div class="wrap">
+      <div class="about-card reveal">
+        <div class="about-id">
+          <div class="about-avatar">HS</div>
+          <div>
+            <div class="about-name">Harsh Sharma</div>
+            <div class="about-role">AI Engineer · Agentic Systems</div>
+          </div>
+        </div>
+        <div class="about-divider"></div>
+        <div class="role-list">
+          <div class="role-row"><span class="rk">Focus</span><span class="rv">LLM systems & multi-agent
+              architecture</span></div>
+          <div class="role-row"><span class="rk">Also</span><span class="rv">Machine learning engineering</span></div>
+          <div class="role-row"><span class="rk">Stack</span><span class="rv">LangGraph, LangChain, MCP, FastAPI</span>
+          </div>
+          <div class="role-row"><span class="rk">Status</span><span class="rv">Open to full-time roles</span></div>
+        </div>
+        <div class="about-links">
+          <a href="https://github.com/harsh31415926" target="_blank" rel="noopener" class="pill-link">GitHub ↗</a>
+          <a href="#contact" class="pill-link">Resume ↗</a>
+        </div>
+      </div>
 
-<section id="about">
-  <div class="wrap">
-    <div class="about-card reveal">
-      <div class="about-id">
-        <div class="about-avatar">HS</div>
+      <div class="about-text reveal">
+        <div class="eyebrow">About</div>
+        <h2 class="section-title">Systems that reason —<br>not just respond.</h2>
+        <p style="margin-top:1.6rem">I'm an <strong>AI Engineer</strong> who builds agentic systems: applications where
+          language models don't just answer questions, but orchestrate tools, hold memory, and carry out multi-step
+          plans. My recent work centers on <strong>LangGraph</strong> and the <strong>Model Context Protocol</strong> —
+          coordinating multiple agents that retrieve information, call external tools, and reason toward a goal
+          together.</p>
+        <p>Alongside agentic AI, I work across the <strong>machine learning</strong> stack — building classification and
+          regression models for problems like customer churn, pricing, and predictive analytics, and shipping them as
+          usable products rather than notebooks.</p>
+        <p>I was a finalist at <strong>Smart India Hackathon</strong> with a student dropout predictor, an educational
+          intelligence system aimed at identifying at-risk students before it's too late. I care about building AI
+          that's useful in production, not just impressive in a demo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="proj-head reveal">
         <div>
-          <div class="about-name">Harsh Sharma</div>
-          <div class="about-role">AI Engineer · Agentic Systems</div>
+          <div class="eyebrow">Selected Work</div>
+          <h2 class="section-title">Projects</h2>
+          <p class="section-sub">Agentic systems and machine learning models, built end to end.</p>
         </div>
       </div>
-      <div class="about-divider"></div>
-      <div class="role-list">
-        <div class="role-row"><span class="rk">Focus</span><span class="rv">LLM systems & multi-agent architecture</span></div>
-        <div class="role-row"><span class="rk">Also</span><span class="rv">Machine learning engineering</span></div>
-        <div class="role-row"><span class="rk">Stack</span><span class="rv">LangGraph, LangChain, MCP, FastAPI</span></div>
-        <div class="role-row"><span class="rk">Status</span><span class="rv">Open to full-time roles</span></div>
-      </div>
-      <div class="about-links">
-        <a href="https://github.com/harsh31415926" target="_blank" rel="noopener" class="pill-link">GitHub ↗</a>
-        <a href="#contact" class="pill-link">Resume ↗</a>
+
+      <div class="proj-grid">
+
+        <!-- 1: Multi-Agent AI Chatbot -->
+        <div class="proj-card featured reveal">
+          <div class="proj-top">
+            <div class="proj-icon">🧩</div>
+            <span class="proj-badge">Agentic AI</span>
+          </div>
+          <div class="proj-name">Multi-Agent AI Chatbot</div>
+          <p class="proj-desc">A conversational system where specialized agents collaborate through an orchestration
+            graph — routing tasks, calling tools, and maintaining shared memory across multi-turn conversations.</p>
+          <ul class="proj-features">
+            <li>Agent orchestration via LangGraph state machines, with explicit routing between planner, tool-use, and
+              response agents</li>
+            <li>Tool calling integrated through the Model Context Protocol (MCP) for standardized, extensible tool
+              access</li>
+            <li>Persistent memory layer so context carries across sessions, not just within a single turn</li>
+          </ul>
+          <div class="proj-tags">
+            <span class="proj-tag">LangGraph</span><span class="proj-tag">LangChain</span><span
+              class="proj-tag">MCP</span><span class="proj-tag">Python</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/harsh31415926/Chat-Bot" target="_blank" rel="noopener" class="proj-link gh"
+              data-link-type="github">GitHub</a>
+            <a href="https://chatw-chatbot.streamlit.app/" target="_blank" rel="noopener" class="proj-link live">Live
+              Demo</a>
+          </div>
+        </div>
+
+        <!-- 4: Multi-Agent Itinerary Planner -->
+        <div class="proj-card featured reveal">
+          <div class="proj-top">
+            <div class="proj-icon">🧭</div>
+            <span class="proj-badge">Agentic AI</span>
+          </div>
+          <div class="proj-name">Multi-Agent Itinerary Planner</div>
+          <p class="proj-desc">A travel intelligence system where coordinated agents handle flight search, real-time
+            information retrieval, and itinerary assembly — turning a single request into a structured, bookable plan.
+          </p>
+          <ul class="proj-features">
+            <li>Multi-agent pipeline built on LangGraph, served at low latency through Groq inference</li>
+            <li>Live web grounding via Tavily and flight data via AviationStack, merged into one coherent plan</li>
+            <li>PostgreSQL persistence with a Streamlit front end for interactive trip planning</li>
+          </ul>
+          <div class="proj-tags">
+            <span class="proj-tag">LangGraph</span><span class="proj-tag">Groq</span><span
+              class="proj-tag">Tavily</span><span class="proj-tag">AviationStack</span><span
+              class="proj-tag">PostgreSQL</span><span class="proj-tag">Streamlit</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/harsh31415926/Itinerary-Planner-Agent" target="_blank" rel="noopener"
+              class="proj-link gh" data-link-type="github">GitHub</a>
+            <a href="https://github.com/harsh31415926/Itinerary-Planner-Agent#readme" target="_blank" rel="noopener"
+              class="proj-link live">View Details</a>
+          </div>
+        </div>
+
+        <!-- 3: Student Dropout Predictor -->
+        <div class="proj-card reveal">
+          <div class="proj-top">
+            <div class="proj-icon">🎓</div>
+            <span class="proj-badge">SIH Finalist</span>
+          </div>
+          <div class="proj-name">Student Dropout Predictor</div>
+          <p class="proj-desc">An educational intelligence system that flags students at risk of dropping out, built as
+            a Smart India Hackathon finalist project.</p>
+          <ul class="proj-features">
+            <li>Predictive analytics model trained on academic and behavioral indicators</li>
+            <li>Designed for early intervention rather than after-the-fact reporting</li>
+          </ul>
+          <div class="proj-tags">
+            <span class="proj-tag">Predictive Analytics</span><span class="proj-tag">Python</span><span
+              class="proj-tag">scikit-learn</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/harsh31415926/SIH-Project" target="_blank" rel="noopener" class="proj-link gh"
+              data-link-type="github">GitHub</a>
+            <a href="https://github.com/harsh31415926/SIH-Project#readme" target="_blank" rel="noopener"
+              class="proj-link live">View Details</a>
+          </div>
+        </div>
+
+        <!-- 2: Movie Recommendation System -->
+        <div class="proj-card reveal">
+          <div class="proj-top">
+            <div class="proj-icon">🎬</div>
+            <span class="proj-badge">ML</span>
+          </div>
+          <div class="proj-name">Movie Recommendation System</div>
+          <p class="proj-desc">A recommendation engine that surfaces personalized movie suggestions based on user
+            preferences and similarity modeling.</p>
+          <ul class="proj-features">
+            <li>Similarity-based recommendation engine over a structured movie dataset</li>
+            <li>Tuned for personalized, relevant suggestions rather than generic popularity ranking</li>
+          </ul>
+          <div class="proj-tags">
+            <span class="proj-tag">Machine Learning</span><span class="proj-tag">Python</span><span
+              class="proj-tag">Pandas</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/harsh31415926/Movie-Recommendation-System" target="_blank" rel="noopener"
+              class="proj-link gh" data-link-type="github">GitHub</a>
+            <a href="https://movie-recommendation-system-31415926.streamlit.app/" target="_blank" rel="noopener"
+              class="proj-link live">Live Demo</a>
+          </div>
+        </div>
+
+        <!-- 5: Bank Churn Predictor -->
+        <div class="proj-card reveal">
+          <div class="proj-top">
+            <div class="proj-icon">🏦</div>
+            <span class="proj-badge">ML</span>
+          </div>
+          <div class="proj-name">Bank Churn Predictor</div>
+          <p class="proj-desc">A classification model that predicts which bank customers are likely to churn, supporting
+            targeted customer retention strategy.</p>
+          <ul class="proj-features">
+            <li>Classification model trained on customer behavior and account data</li>
+            <li>Built to inform retention analytics, not just produce a single accuracy score</li>
+          </ul>
+          <div class="proj-tags">
+            <span class="proj-tag">Classification</span><span class="proj-tag">scikit-learn</span><span
+              class="proj-tag">Python</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/harsh31415926/Bank-Churn" target="_blank" rel="noopener" class="proj-link gh"
+              data-link-type="github">GitHub</a>
+            <a href="https://github.com/harsh31415926/Bank-Churn#readme" target="_blank" rel="noopener"
+              class="proj-link live">View Details</a>
+          </div>
+        </div>
+
+        <!-- 6: California House Price Predictor -->
+        <div class="proj-card reveal">
+          <div class="proj-top">
+            <div class="proj-icon">🏠</div>
+            <span class="proj-badge">ML</span>
+          </div>
+          <div class="proj-name">California House Price Predictor</div>
+          <p class="proj-desc">A regression model estimating California housing prices from demographic and geographic
+            features.</p>
+          <ul class="proj-features">
+            <li>Regression modeling over the classic California housing dataset</li>
+            <li>Feature engineering and evaluation framed as a predictive analytics workflow</li>
+          </ul>
+          <div class="proj-tags">
+            <span class="proj-tag">Regression</span><span class="proj-tag">Data Science</span><span
+              class="proj-tag">Python</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/harsh31415926/Project-California-Housing" target="_blank" rel="noopener"
+              class="proj-link gh" data-link-type="github">GitHub</a>
+            <a href="https://github.com/harsh31415926/Project-California-Housing#readme" target="_blank" rel="noopener"
+              class="proj-link live">View Details</a>
+          </div>
+        </div>
+
       </div>
     </div>
+  </section>
 
-    <div class="about-text reveal">
-      <div class="eyebrow">About</div>
-      <h2 class="section-title">Systems that reason —<br>not just respond.</h2>
-      <p style="margin-top:1.6rem">I'm an <strong>AI Engineer</strong> who builds agentic systems: applications where language models don't just answer questions, but orchestrate tools, hold memory, and carry out multi-step plans. My recent work centers on <strong>LangGraph</strong> and the <strong>Model Context Protocol</strong> — coordinating multiple agents that retrieve information, call external tools, and reason toward a goal together.</p>
-      <p>Alongside agentic AI, I work across the <strong>machine learning</strong> stack — building classification and regression models for problems like customer churn, pricing, and predictive analytics, and shipping them as usable products rather than notebooks.</p>
-      <p>I was a finalist at <strong>Smart India Hackathon</strong> with a student dropout predictor, an educational intelligence system aimed at identifying at-risk students before it's too late. I care about building AI that's useful in production, not just impressive in a demo.</p>
-    </div>
-  </div>
-</section>
-
-<section id="projects">
-  <div class="wrap">
-    <div class="proj-head reveal">
-      <div>
-        <div class="eyebrow">Selected Work</div>
-        <h2 class="section-title">Projects</h2>
-        <p class="section-sub">Agentic systems and machine learning models, built end to end.</p>
+  <section id="skills">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">Capabilities</div>
+        <h2 class="section-title">Skills</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-col reveal">
+          <div class="skill-head"><span class="skill-icon">🧩</span><span class="skill-name">AI Engineering</span></div>
+          <ul class="skill-list">
+            <li>LangGraph</li>
+            <li>LangChain</li>
+            <li>MCP</li>
+            <li>Agentic AI</li>
+            <li>RAG</li>
+            <li>Prompt Engineering</li>
+          </ul>
+        </div>
+        <div class="skill-col reveal">
+          <div class="skill-head"><span class="skill-icon">📈</span><span class="skill-name">Machine Learning</span>
+          </div>
+          <ul class="skill-list">
+            <li>Scikit-learn</li>
+            <li>XGBoost</li>
+            <li>TensorFlow</li>
+            <li>PyTorch</li>
+          </ul>
+        </div>
+        <div class="skill-col reveal">
+          <div class="skill-head"><span class="skill-icon">⚙️</span><span class="skill-name">Backend</span></div>
+          <ul class="skill-list">
+            <li>FastAPI</li>
+            <li>Python</li>
+            <li>PostgreSQL</li>
+          </ul>
+        </div>
+        <div class="skill-col reveal">
+          <div class="skill-head"><span class="skill-icon">🚀</span><span class="skill-name">Cloud & Deployment</span>
+          </div>
+          <ul class="skill-list">
+            <li>Streamlit</li>
+            <li>Docker</li>
+            <li>GitHub Actions</li>
+          </ul>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="proj-grid">
-
-      <!-- 1: Multi-Agent AI Chatbot -->
-      <div class="proj-card featured reveal">
-        <div class="proj-top">
-          <div class="proj-icon">🧩</div>
-          <span class="proj-badge">Agentic AI</span>
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-inner reveal">
+        <div class="eyebrow" style="justify-content:center">Contact</div>
+        <h2 class="contact-title">Let's build <em>intelligent</em><br>systems together.</h2>
+        <p class="contact-sub">Open to AI Engineer, LLM Engineer, and Machine Learning Engineer roles. If you're working
+          on agentic systems or production ML, I'd like to hear about it.</p>
+        <div class="contact-actions">
+          <a href="mailto:harsh3h3@gmail.com" class="btn-primary">Email me →</a>
+          <a href="https://www.linkedin.com/in/harshsharma-engineer/" target="_blank" rel="noopener"
+            class="btn-secondary">LinkedIn ↗</a>
         </div>
-        <div class="proj-name">Multi-Agent AI Chatbot</div>
-        <p class="proj-desc">A conversational system where specialized agents collaborate through an orchestration graph — routing tasks, calling tools, and maintaining shared memory across multi-turn conversations.</p>
-        <ul class="proj-features">
-          <li>Agent orchestration via LangGraph state machines, with explicit routing between planner, tool-use, and response agents</li>
-          <li>Tool calling integrated through the Model Context Protocol (MCP) for standardized, extensible tool access</li>
-          <li>Persistent memory layer so context carries across sessions, not just within a single turn</li>
-        </ul>
-        <div class="proj-tags">
-          <span class="proj-tag">LangGraph</span><span class="proj-tag">LangChain</span><span class="proj-tag">MCP</span><span class="proj-tag">Python</span>
+        <div class="contact-channels">
+          <a href="mailto:harsh3h3@gmail.com" class="channel"><span class="ci">✉</span>harsh3h3@gmail.com</a>
+          <a href="https://github.com/harsh31415926" target="_blank" rel="noopener" class="channel"><span
+              class="ci">⌥</span>github.com/harsh31415926</a>
+          <a href="https://www.linkedin.com/in/harshsharma-engineer/" target="_blank" rel="noopener"
+            class="channel"><span class="ci">in</span>harshsharma-engineer</a>
         </div>
-        <div class="proj-links">
-          <a href="ADD_GITHUB_LINK_HERE" target="_blank" rel="noopener" class="proj-link gh" data-link-type="github">GitHub</a>
-          <a href="ADD_DEPLOYMENT_LINK_HERE" target="_blank" rel="noopener" class="proj-link live" data-link-type="demo">View Live</a>
-        </div>
-      </div>
-
-      <!-- 4: Multi-Agent Itinerary Planner -->
-      <div class="proj-card featured reveal">
-        <div class="proj-top">
-          <div class="proj-icon">🧭</div>
-          <span class="proj-badge">Agentic AI</span>
-        </div>
-        <div class="proj-name">Multi-Agent Itinerary Planner</div>
-        <p class="proj-desc">A travel intelligence system where coordinated agents handle flight search, real-time information retrieval, and itinerary assembly — turning a single request into a structured, bookable plan.</p>
-        <ul class="proj-features">
-          <li>Multi-agent pipeline built on LangGraph, served at low latency through Groq inference</li>
-          <li>Live web grounding via Tavily and flight data via AviationStack, merged into one coherent plan</li>
-          <li>PostgreSQL persistence with a Streamlit front end for interactive trip planning</li>
-        </ul>
-        <div class="proj-tags">
-          <span class="proj-tag">LangGraph</span><span class="proj-tag">Groq</span><span class="proj-tag">Tavily</span><span class="proj-tag">AviationStack</span><span class="proj-tag">PostgreSQL</span><span class="proj-tag">Streamlit</span>
-        </div>
-        <div class="proj-links">
-          <a href="ADD_GITHUB_LINK_HERE" target="_blank" rel="noopener" class="proj-link gh" data-link-type="github">GitHub</a>
-          <a href="ADD_DEPLOYMENT_LINK_HERE" target="_blank" rel="noopener" class="proj-link live" data-link-type="demo">View Live</a>
-        </div>
-      </div>
-
-      <!-- 3: Student Dropout Predictor -->
-      <div class="proj-card reveal">
-        <div class="proj-top">
-          <div class="proj-icon">🎓</div>
-          <span class="proj-badge">SIH Finalist</span>
-        </div>
-        <div class="proj-name">Student Dropout Predictor</div>
-        <p class="proj-desc">An educational intelligence system that flags students at risk of dropping out, built as a Smart India Hackathon finalist project.</p>
-        <ul class="proj-features">
-          <li>Predictive analytics model trained on academic and behavioral indicators</li>
-          <li>Designed for early intervention rather than after-the-fact reporting</li>
-        </ul>
-        <div class="proj-tags">
-          <span class="proj-tag">Predictive Analytics</span><span class="proj-tag">Python</span><span class="proj-tag">scikit-learn</span>
-        </div>
-        <div class="proj-links">
-          <a href="ADD_GITHUB_LINK_HERE" target="_blank" rel="noopener" class="proj-link gh" data-link-type="github">GitHub</a>
-          <a href="ADD_DEPLOYMENT_LINK_HERE" target="_blank" rel="noopener" class="proj-link live" data-link-type="demo">View Live</a>
-        </div>
-      </div>
-
-      <!-- 2: Movie Recommendation System -->
-      <div class="proj-card reveal">
-        <div class="proj-top">
-          <div class="proj-icon">🎬</div>
-          <span class="proj-badge">ML</span>
-        </div>
-        <div class="proj-name">Movie Recommendation System</div>
-        <p class="proj-desc">A recommendation engine that surfaces personalized movie suggestions based on user preferences and similarity modeling.</p>
-        <ul class="proj-features">
-          <li>Similarity-based recommendation engine over a structured movie dataset</li>
-          <li>Tuned for personalized, relevant suggestions rather than generic popularity ranking</li>
-        </ul>
-        <div class="proj-tags">
-          <span class="proj-tag">Machine Learning</span><span class="proj-tag">Python</span><span class="proj-tag">Pandas</span>
-        </div>
-        <div class="proj-links">
-          <a href="ADD_GITHUB_LINK_HERE" target="_blank" rel="noopener" class="proj-link gh" data-link-type="github">GitHub</a>
-          <a href="ADD_DEPLOYMENT_LINK_HERE" target="_blank" rel="noopener" class="proj-link live" data-link-type="demo">View Live</a>
-        </div>
-      </div>
-
-      <!-- 5: Bank Churn Predictor -->
-      <div class="proj-card reveal">
-        <div class="proj-top">
-          <div class="proj-icon">🏦</div>
-          <span class="proj-badge">ML</span>
-        </div>
-        <div class="proj-name">Bank Churn Predictor</div>
-        <p class="proj-desc">A classification model that predicts which bank customers are likely to churn, supporting targeted customer retention strategy.</p>
-        <ul class="proj-features">
-          <li>Classification model trained on customer behavior and account data</li>
-          <li>Built to inform retention analytics, not just produce a single accuracy score</li>
-        </ul>
-        <div class="proj-tags">
-          <span class="proj-tag">Classification</span><span class="proj-tag">scikit-learn</span><span class="proj-tag">Python</span>
-        </div>
-        <div class="proj-links">
-          <a href="ADD_GITHUB_LINK_HERE" target="_blank" rel="noopener" class="proj-link gh" data-link-type="github">GitHub</a>
-          <a href="ADD_DEPLOYMENT_LINK_HERE" target="_blank" rel="noopener" class="proj-link live" data-link-type="demo">View Live</a>
-        </div>
-      </div>
-
-      <!-- 6: California House Price Predictor -->
-      <div class="proj-card reveal">
-        <div class="proj-top">
-          <div class="proj-icon">🏠</div>
-          <span class="proj-badge">ML</span>
-        </div>
-        <div class="proj-name">California House Price Predictor</div>
-        <p class="proj-desc">A regression model estimating California housing prices from demographic and geographic features.</p>
-        <ul class="proj-features">
-          <li>Regression modeling over the classic California housing dataset</li>
-          <li>Feature engineering and evaluation framed as a predictive analytics workflow</li>
-        </ul>
-        <div class="proj-tags">
-          <span class="proj-tag">Regression</span><span class="proj-tag">Data Science</span><span class="proj-tag">Python</span>
-        </div>
-        <div class="proj-links">
-          <a href="ADD_GITHUB_LINK_HERE" target="_blank" rel="noopener" class="proj-link gh" data-link-type="github">GitHub</a>
-          <a href="ADD_DEPLOYMENT_LINK_HERE" target="_blank" rel="noopener" class="proj-link live" data-link-type="demo">View Live</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="reveal">
-      <div class="eyebrow">Capabilities</div>
-      <h2 class="section-title">Skills</h2>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-col reveal">
-        <div class="skill-head"><span class="skill-icon">🧩</span><span class="skill-name">AI Engineering</span></div>
-        <ul class="skill-list"><li>LangGraph</li><li>LangChain</li><li>MCP</li><li>Agentic AI</li><li>RAG</li><li>Prompt Engineering</li></ul>
-      </div>
-      <div class="skill-col reveal">
-        <div class="skill-head"><span class="skill-icon">📈</span><span class="skill-name">Machine Learning</span></div>
-        <ul class="skill-list"><li>Scikit-learn</li><li>XGBoost</li><li>TensorFlow</li><li>PyTorch</li></ul>
-      </div>
-      <div class="skill-col reveal">
-        <div class="skill-head"><span class="skill-icon">⚙️</span><span class="skill-name">Backend</span></div>
-        <ul class="skill-list"><li>FastAPI</li><li>Python</li><li>PostgreSQL</li></ul>
-      </div>
-      <div class="skill-col reveal">
-        <div class="skill-head"><span class="skill-icon">🚀</span><span class="skill-name">Cloud & Deployment</span></div>
-        <ul class="skill-list"><li>Streamlit</li><li>Docker</li><li>GitHub Actions</li></ul>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="contact">
-  <div class="wrap">
-    <div class="contact-inner reveal">
-      <div class="eyebrow" style="justify-content:center">Contact</div>
-      <h2 class="contact-title">Let's build <em>intelligent</em><br>systems together.</h2>
-      <p class="contact-sub">Open to AI Engineer, LLM Engineer, and Machine Learning Engineer roles. If you're working on agentic systems or production ML, I'd like to hear about it.</p>
-      <div class="contact-actions">
-        <a href="mailto:harsh3h3@gmail.com" class="btn-primary">Email me →</a>
-        <a href="https://www.linkedin.com/in/harshsharma-engineer/" target="_blank" rel="noopener" class="btn-secondary">LinkedIn ↗</a>
-      </div>
-      <div class="contact-channels">
-        <a href="mailto:harsh3h3@gmail.com" class="channel"><span class="ci">✉</span>harsh3h3@gmail.com</a>
-        <a href="https://github.com/harsh31415926" target="_blank" rel="noopener" class="channel"><span class="ci">⌥</span>github.com/harsh31415926</a>
-        <a href="https://www.linkedin.com/in/harshsharma-engineer/" target="_blank" rel="noopener" class="channel"><span class="ci">in</span>harshsharma-engineer</a>
-      </div>
+  <footer>
+    <div class="wrap footer-row">
+      <span class="footer-copy">© 2026 Harsh Sharma</span>
+      <span class="footer-avail"><span class="fd"></span>Available for AI Engineer roles</span>
     </div>
-  </div>
-</section>
+  </footer>
 
-<footer>
-  <div class="wrap footer-row">
-    <span class="footer-copy">© 2026 Harsh Sharma</span>
-    <span class="footer-avail"><span class="fd"></span>Available for AI Engineer roles</span>
-  </div>
-</footer>
-
-<script>
-// Scroll reveal
-const io = new IntersectionObserver(entries => entries.forEach(e => {
-  if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
-}), { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach((el, i) => {
-  el.style.transitionDelay = (i % 4 * 0.06) + 's';
-  io.observe(el);
-});
-
-// Disable placeholder links until real URLs are added, and warn in console
-document.querySelectorAll('a[href^="ADD_"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const type = a.dataset.linkType === 'github' ? 'GitHub repository' : 'live demo';
-    alert(`Add your ${type} link in the code (look for ${a.getAttribute('href')}) to activate this button.`);
-  });
-});
-</script>
+  <script>
+    // Scroll reveal
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+    }), { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i % 4 * 0.06) + 's';
+      io.observe(el);
+    });
+  </script>
 </body>
+
 </html>
